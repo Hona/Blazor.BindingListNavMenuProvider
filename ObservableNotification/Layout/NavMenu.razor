@@ -1,0 +1,50 @@
+﻿@using System.ComponentModel
+@implements IDisposable
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">ObservableNotification</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        @foreach (var navItem in NavProvider.Items)
+        {
+            <div class="nav-item px-3">
+                @*href="@navItem.Url" *@
+                <NavLink class="nav-link" href="#" Match="NavLinkMatch.All">
+                    @navItem.Name
+                </NavLink>
+            </div>
+        }
+    </nav>
+</div>
+
+@code {
+    [Inject] public NavProvider NavProvider { get; set; }
+    private bool collapseNavMenu = true;
+
+    protected override void OnInitialized()
+    {
+        NavProvider.Items.ListChanged += HandleNavListChanged;
+    }
+
+    private void HandleNavListChanged(object? sender, ListChangedEventArgs e)
+        => StateHasChanged();
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+
+    public void Dispose()
+    {
+        NavProvider.Items.ListChanged -= HandleNavListChanged;
+    }
+}

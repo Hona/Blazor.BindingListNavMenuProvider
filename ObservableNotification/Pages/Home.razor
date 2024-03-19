@@ -1,0 +1,23 @@
+﻿@page "/"
+@inject NavProvider NavProvider
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<button @onclick="DeleteNavItem">
+    Delete something 🤭🤭
+</button>
+
+@code
+{
+    private void DeleteNavItem()
+    {
+        if (NavProvider.Items.Count <= 0) return;
+        
+        var randomIndex = Random.Shared.Next(NavProvider.Items.Count);
+        NavProvider.Items.RemoveAt(randomIndex); // Magically notifies the NavMenu component to re-render
+    }
+}

@@ -1,0 +1,32 @@
+﻿<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"/>
+        <FocusOnNavigate RouteData="@routeData" Selector="h1"/>
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <p role="alert">Sorry, there's nothing at this address.</p>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code
+{
+    [Inject] public NavProvider NavProvider { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate an API call
+        await Task.Delay(2000);
+        
+        NavProvider.Items.Clear();
+        NavProvider.Items.Add(new NavItem("Home", "/"));
+        NavProvider.Items.Add(new NavItem("Counter", "/counter"));
+        NavProvider.Items.Add(new NavItem("Fetch data", "/fetchdata"));
+        NavProvider.Items.Add(new NavItem("Weather forecast", "/weatherforecast"));
+        NavProvider.Items.Add(new NavItem("About", "/about"));
+        NavProvider.Items.Add(new NavItem("Contact", "/contact"));
+        NavProvider.Items.Add(new NavItem("Login", "/login"));
+    }
+}
